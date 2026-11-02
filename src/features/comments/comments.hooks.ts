@@ -1,8 +1,10 @@
-import api from "@/lib/api";
+import { useQuery } from "@tanstack/react-query";
+import { getComments } from "./comments.api";
 import type { Comment } from "./comments.types";
 
-export const getComments = async (postId: Comment["postId"]) => {
-  const res = await api.get<Comment[]>(`/posts/${postId}/comments`);
-
-  return res.data;
+export const useComments = (postId: Comment["postId"]) => {
+  return useQuery({
+    queryKey: ["comments", postId],
+    queryFn: () => getComments(postId),
+  });
 };
